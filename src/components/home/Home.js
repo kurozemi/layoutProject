@@ -1,0 +1,210 @@
+import React, { useState } from "react";
+import { View, Text, TextInput, Image, FlatList, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import styles from "./Home.style"
+
+const topData = [
+    {
+        image: "https://i.ytimg.com/vi/PCAwJs51D0k/maxresdefault.jpg",
+        title: "Pizza",
+    },
+    {
+        image: "https://assets.bonappetit.com/photos/5d1cb1880813410008e914fc/master/pass/Print-Summer-Smash-Burger.jpg",
+        title: "Burger",
+    },
+    {
+        image: "https://media.cooky.vn/images/blog-2016/steak-la-gi-nhung-loai-steak-thong-dung-nhat-tren-toan-the-gioi-ma-ban-nhat-dinh-nen-nem-thu-mot-lan-1.jpg",
+        title: "Steak",
+    },
+    {
+        image: "https://www.seriouseats.com/thmb/GSqpVkulyUZu-D6sPijmbFV_f4s=/1500x1125/filters:fill(auto,1)/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2020__03__20200224-carretteira-pasta-vicky-wasik-21-ffe68515b25f4b348cbde845a59d6a62.jpg",
+        title: "Pasta",
+    }
+]
+const popularItemData = [
+    {
+        image: 'https://www.onceuponachef.com/images/2020/05/best-grilled-chicken-scaled.jpg',
+        title: 'Grilled Chicken',
+        restaurant: 'KFC',
+        price: '€ 15.20',
+        discount: '€ 14.20',
+    },
+    {
+        image: 'https://www.recipetineats.com/wp-content/uploads/2020/01/Fried-Chicken_2-SQ.jpg',
+        title: 'Fried Chicken',
+        restaurant: 'Jolibee',
+        price: '€ 8.0',
+        discount: '€ 7.20',
+    }
+]
+const nearbyDealsData = [
+    {
+        image: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/nachos-supreme-vertical-2-1547669252.png?crop=1xw:1xh;center,top&resize=480:*',
+        title: 'McDonald\'s',
+        subTitle: 'Mexican Creammy nachos',
+        price: '€ 15.20',
+        discount: '€ 13.70',
+        discountPercent: '10%'
+    },
+    {
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCIhgPK1nBiWim1Lz1op6CBxPV0CTnGhwceg&usqp=CAU',
+        title: 'McDonald\'s',
+        subTitle: 'Mexican Creammy nachos',
+        price: '€ 10.50',
+        discount: '€ 10.00',
+        discountPercent: '5%'
+    },
+]
+const Home = () => {
+
+    const [topCategories, setTopCategories] = useState(topData);
+    const [popularItem, setPopularItem] = useState(popularItemData);
+    const [nearbyDeals, setNearbyDeals] = useState(nearbyDealsData);
+    const renderHeader = () => {
+        return (
+            <View style={styles.headerContainer}>
+                <View style={styles.locationIcContainer}>
+                    <Image style={styles.ic} source={require("../../assets/icon/pin.png")}></Image>
+                </View>
+                <View style={styles.searchBar}>
+                    <TextInput
+                        style={styles.searchInput}
+                        placeholder="Search for meals or area" />
+                    <View style={styles.searchIc}>
+                        <Image style={styles.ic} source={require("../../assets/icon/loupe.png")}></Image>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    const renderTopCategoriesList = () => {
+
+        const renderItem = (item) => (
+            <View style={styles.topItem}>
+                <Image
+                    source={{ uri: item.image }}
+                    style={styles.topCategoriesImg}>
+                </Image>
+                <Text style={styles.foodTitle}>{item.title}</Text>
+            </View>
+        )
+
+        return (
+            <View>
+                <FlatList
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    data={topCategories}
+                    renderItem={item => renderItem(item.item)}
+                    style={{ marginLeft: 24 }}
+                    contentContainerStyle={styles.flatListTop}
+                />
+            </View>
+        )
+    }
+    const renderPopularItemList = () => {
+        const renderItem = (item) => (
+            <View style={styles.popularItemCard}>
+                <Image
+                    source={{ uri: item.image }}
+                    style={styles.popularItemImg}>
+                </Image>
+                <View style={styles.popularItemData}>
+                    <View>
+                        <Text style={styles.popularItemTitle}>{item.title}</Text>
+                        <Text style={styles.popularItemRestaurant}>By {item.restaurant}</Text>
+                    </View>
+                    <View style={styles.smallSeperator}></View>
+                    <View style={styles.popularPrice}>
+                        <Text style={styles.price}>{item.price}</Text>
+                        <Text style={styles.discount}>{item.discount}</Text>
+                    </View>
+                </View>
+            </View>
+        )
+
+        return (
+            <View>
+                <FlatList
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    data={popularItem}
+                    renderItem={item => renderItem(item.item)}
+                    style={{ marginLeft: 24 }}
+                    contentContainerStyle={styles.popularItemList}
+                />
+            </View>
+        )
+    }
+    const renderNearbyDealsList = () => {
+        const renderItem = (item) => {
+            return (
+                <View style={styles.nearbyCard}>
+                    <View>
+                        <Image
+                            source={{ uri: item.image }}
+                            style={styles.nearbyImg}
+                        />
+                        <View style={styles.discountContainer}>
+                            <Text style={styles.discountPercent}>{item.discountPercent} OFF</Text>
+                        </View>
+                    </View>
+                    <Text style={styles.nearbyDealsTitle}>{item.title}</Text>
+                    <Text style={styles.nearbyDealsSubTitle}>{item.subTitle}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={styles.price}>{item.price}</Text>
+                        <Text style={styles.discount}>{item.discount}</Text>
+                    </View>
+                </View>
+            )
+        }
+        return (
+            <View>
+                <FlatList
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    data={nearbyDeals}
+                    renderItem={item => renderItem(item.item)}
+                    style={{ marginLeft: 24 }}
+                    contentContainerStyle={styles.popularItemList}
+                />
+            </View>
+        )
+    }
+
+
+    return (
+        <SafeAreaView style ={{flex:1}}>
+            <ScrollView
+                bounces={false}
+            >
+                <View style={styles.main}>
+                    {renderHeader()}
+                    <View style={styles.categoriesRow}>
+                        <Text style={styles.title}>Top Categories</Text>
+                        <View style={styles.filterContainer}>
+                            <Image style={styles.ic} source={require("../../assets/icon/filter.png")}></Image>
+                            <Text style={styles.subTitle}>Filter</Text>
+                        </View>
+                    </View>
+                    {renderTopCategoriesList()}
+                    <View style={styles.seperator}></View>
+                    <View style={styles.categoriesRow}>
+                        <Text style={styles.title}>Popular Items</Text>
+                        <Text style={styles.subTitle}>View all</Text>
+                    </View>
+                    {renderPopularItemList()}
+                    <View style={styles.seperator}></View>
+                    <View style={styles.categoriesRow}>
+                        <Text style={styles.title}>Nearby Deals</Text>
+                        <Text style={styles.subTitle}>View all</Text>
+                    </View>
+                    {renderNearbyDealsList()}
+                </View>
+            </ScrollView>
+        </SafeAreaView>
+    )
+}
+
+export default Home;
