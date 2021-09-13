@@ -55,6 +55,20 @@ const nearbyDealsData = [
         discountPercent: '5%'
     },
 ]
+const CategoriesList = ({ data, contentStyle, renderItem }) => {
+    return (
+        <View>
+            <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={data}
+                renderItem={item => renderItem(item.item)}
+                style={{ marginLeft: 24 }}
+                contentContainerStyle={contentStyle}
+            />
+        </View>
+    )
+}
 const Home = () => {
 
     const [topCategories, setTopCategories] = useState(topData);
@@ -91,16 +105,11 @@ const Home = () => {
         )
 
         return (
-            <View>
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={topCategories}
-                    renderItem={item => renderItem(item.item)}
-                    style={{ marginLeft: 24 }}
-                    contentContainerStyle={styles.flatListTop}
-                />
-            </View>
+            <CategoriesList
+                data={topCategories}
+                contentStyle={styles.flatListTop}
+                renderItem={renderItem}
+            />
         )
     }
     const renderPopularItemList = () => {
@@ -126,13 +135,10 @@ const Home = () => {
 
         return (
             <View>
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
+                <CategoriesList
                     data={popularItem}
-                    renderItem={item => renderItem(item.item)}
-                    style={{ marginLeft: 24 }}
-                    contentContainerStyle={styles.popularItemList}
+                    contentStyle={styles.popularItemList}
+                    renderItem={renderItem}
                 />
             </View>
         )
@@ -161,13 +167,10 @@ const Home = () => {
         }
         return (
             <View>
-                <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
+                 <CategoriesList
                     data={nearbyDeals}
-                    renderItem={item => renderItem(item.item)}
-                    style={{ marginLeft: 24 }}
-                    contentContainerStyle={styles.popularItemList}
+                    contentStyle={styles.popularItemList}
+                    renderItem={renderItem}
                 />
             </View>
         )
@@ -175,7 +178,7 @@ const Home = () => {
 
 
     return (
-        <SafeAreaView style ={{flex:1}}>
+        <SafeAreaView style={{ flex: 1 }}>
             <ScrollView
                 bounces={false}
             >
