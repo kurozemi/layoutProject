@@ -26,15 +26,15 @@ const popularItemData = [
         image: 'https://www.onceuponachef.com/images/2020/05/best-grilled-chicken-scaled.jpg',
         title: 'Grilled Chicken',
         restaurant: 'KFC',
-        price: '€ 15.20',
-        discount: '€ 14.20',
+        price: "15.20",
+        discount: "14.20",
     },
     {
         image: 'https://www.recipetineats.com/wp-content/uploads/2020/01/Fried-Chicken_2-SQ.jpg',
         title: 'Fried Chicken',
         restaurant: 'Jolibee',
-        price: '€ 8.0',
-        discount: '€ 7.20',
+        price:"8.0",
+        discount: "7.20",
     }
 ]
 const nearbyDealsData = [
@@ -42,17 +42,17 @@ const nearbyDealsData = [
         image: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/nachos-supreme-vertical-2-1547669252.png?crop=1xw:1xh;center,top&resize=480:*',
         title: 'McDonald\'s',
         subTitle: 'Mexican Creammy nachos',
-        price: '€ 15.20',
-        discount: '€ 13.70',
-        discountPercent: '10%'
+        price: "15.20",
+        discount: "13.70",
+        discountPercent: 10
     },
     {
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCIhgPK1nBiWim1Lz1op6CBxPV0CTnGhwceg&usqp=CAU',
         title: 'McDonald\'s',
         subTitle: 'Mexican Creammy nachos',
-        price: '€ 10.50',
-        discount: '€ 10.00',
-        discountPercent: '5%'
+        price: "10.50",
+        discount: "10.00",
+        discountPercent: 5
     },
 ]
 const CategoriesList = ({ data, contentStyle, renderItem }) => {
@@ -74,6 +74,7 @@ const Home = () => {
     const [topCategories, setTopCategories] = useState(topData);
     const [popularItem, setPopularItem] = useState(popularItemData);
     const [nearbyDeals, setNearbyDeals] = useState(nearbyDealsData);
+    
     const renderHeader = () => {
         return (
             <View style={styles.headerContainer}>
@@ -126,8 +127,8 @@ const Home = () => {
                     </View>
                     <View style={styles.smallSeperator}></View>
                     <View style={styles.popularPrice}>
-                        <Text style={styles.price}>{item.price}</Text>
-                        <Text style={styles.discount}>{item.discount}</Text>
+                        <Text style={styles.price}>€ {item.price}</Text>
+                        <Text style={styles.discount}>€ {item.discount}</Text>
                     </View>
                 </View>
             </View>
@@ -153,14 +154,14 @@ const Home = () => {
                             style={styles.nearbyImg}
                         />
                         <View style={styles.discountContainer}>
-                            <Text style={styles.discountPercent}>{item.discountPercent} OFF</Text>
+                            <Text style={styles.discountPercent}>{item.discountPercent}% OFF</Text>
                         </View>
                     </View>
                     <Text style={styles.nearbyDealsTitle}>{item.title}</Text>
                     <Text style={styles.nearbyDealsSubTitle}>{item.subTitle}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={styles.price}>{item.price}</Text>
-                        <Text style={styles.discount}>{item.discount}</Text>
+                        <Text style={styles.price}>€ {item.price}</Text>
+                        <Text style={styles.discount}>€ {item.discount}</Text>
                     </View>
                 </View>
             )

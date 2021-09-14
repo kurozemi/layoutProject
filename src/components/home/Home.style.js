@@ -4,7 +4,7 @@ import { Platform, StyleSheet } from "react-native"
 const styles = StyleSheet.create({
     main: {
         flex: 1,
-        paddingTop: Platform.OS == "ios" ? '2%' : '3%',
+        paddingTop: Platform.OS == "ios" ? '0%' : '3%',
         marginBottom: 20,
     },
     headerContainer: {
