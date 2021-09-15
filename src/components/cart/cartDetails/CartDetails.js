@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, FlatList, TextInput, Image, TouchableOpacity, ScrollView } from 'react-native'
 import styles from './CartDetails.style'
 
 //Cart Component
 const ProductRow = ({ data, index, updateQuantity }) => {
-    console.log('data: ', data);
     return (
         <View>
             <View style={styles.productRow}>
@@ -45,7 +44,8 @@ const CartList = ({ data, setCartDetails }) => {
             {
                 data.map((item, index) => <ProductRow
                     data={item}
-                    index={index}
+                    key={index}
+                    index = {index}
                     updateQuantity={updateQuantity}
                 />
                 )
@@ -55,19 +55,28 @@ const CartList = ({ data, setCartDetails }) => {
 }
 
 //Bill Component
-const BillDetails = ({ cart }) => {
+const BillDetails = (props) => {
+
+    const cart = props.cart;
+    const discountPercent = props.discount;
 
     const restaurantCharges = "3.00";
     const deliveryFee = "1.00";
-    const discountPercent = "10";
 
     const totalPrice = cart.map(item => item.price * item.quantity)
         .reduce((total, price) =>
             total + parseFloat(price)
             , 0).toFixed(2);
 
-    const discount = totalPrice * (parseInt(discountPercent)) / 100;
+    var discount = 0;
+    if (discountPercent != undefined) {
+        discount = totalPrice * (parseInt(discountPercent)) / 100;
+    }
     const toPay = (totalPrice + parseFloat(restaurantCharges) + parseFloat(deliveryFee) - parseFloat(discount)).toFixed(2);
+
+    useEffect(() => {
+        props.setFinalPrice(toPay);
+    }, [toPay])
     var newTitle = "";
 
     const renderPrice = (title, price, discount) => {
@@ -94,7 +103,7 @@ const BillDetails = ({ cart }) => {
                 {renderPrice("Item Total", totalPrice)}
                 {renderPrice("Restaurant Charges", restaurantCharges)}
                 {renderPrice("Delivery Fee", deliveryFee)}
-                {renderPrice("Discount", discount, `${discountPercent}%`)}
+                {discountPercent ? renderPrice("Discount", discount, `${discountPercent}%`) : null}
             </View>
             <View style={styles.seperator}></View>
             <View style={styles.rowTitle}>
@@ -133,20 +142,23 @@ const RequestDiscount = () => {
     )
 }
 //Main Component
-const CartDetails = ({ cart, setCartDetails }) => {
+const CartDetails = (props) => {
 
     return (
 
         <ScrollView
+            keyboardDismissMode
             style={styles.scrollView}
         >
 
             <CartList
-                data={cart}
-                setCartDetails={setCartDetails}
+                data={props.cart}
+                setCartDetails={props.setCartDetails}
             />
             <BillDetails
-                cart={cart}
+                discount={props.discount}
+                setFinalPrice={props.setFinalPrice}
+                cart={props.cart}
             />
             <RequestDiscount />
         </ScrollView>

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Image, FlatList, ScrollView } from "react-native";
+import { View, Text, TextInput, Image, FlatList, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "./Home.style"
 
-const topData = [
+const topCategories = [
     {
         image: "https://i.ytimg.com/vi/PCAwJs51D0k/maxresdefault.jpg",
         title: "Pizza",
@@ -21,26 +21,26 @@ const topData = [
         title: "Pasta",
     }
 ]
-const popularItemData = [
+const popularItem = [
     {
         image: 'https://www.onceuponachef.com/images/2020/05/best-grilled-chicken-scaled.jpg',
-        title: 'Grilled Chicken',
+        name: 'Grilled Chicken',
         restaurant: 'KFC',
         price: "15.20",
         discount: "14.20",
     },
     {
         image: 'https://www.recipetineats.com/wp-content/uploads/2020/01/Fried-Chicken_2-SQ.jpg',
-        title: 'Fried Chicken',
+        name: 'Fried Chicken',
         restaurant: 'Jolibee',
-        price:"8.0",
+        price: "8.0",
         discount: "7.20",
     }
 ]
-const nearbyDealsData = [
+const nearbyDeals = [
     {
         image: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/nachos-supreme-vertical-2-1547669252.png?crop=1xw:1xh;center,top&resize=480:*',
-        title: 'McDonald\'s',
+        name: 'McDonald\'s',
         subTitle: 'Mexican Creammy nachos',
         price: "15.20",
         discount: "13.70",
@@ -48,7 +48,7 @@ const nearbyDealsData = [
     },
     {
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCIhgPK1nBiWim1Lz1op6CBxPV0CTnGhwceg&usqp=CAU',
-        title: 'McDonald\'s',
+        name: 'McDonald\'s',
         subTitle: 'Mexican Creammy nachos',
         price: "10.50",
         discount: "10.00",
@@ -71,10 +71,9 @@ const CategoriesList = ({ data, contentStyle, renderItem }) => {
 }
 const Home = () => {
 
-    const [topCategories, setTopCategories] = useState(topData);
-    const [popularItem, setPopularItem] = useState(popularItemData);
-    const [nearbyDeals, setNearbyDeals] = useState(nearbyDealsData);
-    
+    const addToCart = (item) => {
+
+    }
     const renderHeader = () => {
         return (
             <View style={styles.headerContainer}>
@@ -122,10 +121,19 @@ const Home = () => {
                 </Image>
                 <View style={styles.popularItemData}>
                     <View>
-                        <Text style={styles.popularItemTitle}>{item.title}</Text>
+                        <Text style={styles.popularItemTitle}>{item.name}</Text>
                         <Text style={styles.popularItemRestaurant}>By {item.restaurant}</Text>
                     </View>
                     <View style={styles.smallSeperator}></View>
+                    <TouchableOpacity
+                        onPress={() => addToCart(item)}
+                        style={styles.popularCartBtn}
+                    >
+                        <Image
+                            source={require("../../assets/icon/add-cart.png")}
+                            style={styles.cartIc}
+                        />
+                    </TouchableOpacity>
                     <View style={styles.popularPrice}>
                         <Text style={styles.price}>€ {item.price}</Text>
                         <Text style={styles.discount}>€ {item.discount}</Text>
@@ -157,18 +165,27 @@ const Home = () => {
                             <Text style={styles.discountPercent}>{item.discountPercent}% OFF</Text>
                         </View>
                     </View>
-                    <Text style={styles.nearbyDealsTitle}>{item.title}</Text>
+                    <Text style={styles.nearbyDealsTitle}>{item.name}</Text>
                     <Text style={styles.nearbyDealsSubTitle}>{item.subTitle}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={styles.price}>€ {item.price}</Text>
                         <Text style={styles.discount}>€ {item.discount}</Text>
+                        <TouchableOpacity
+                            onPress={() => addToCart(item)}
+                            style={styles.nearbyCartBtn}
+                        >
+                            <Image
+                                source={require("../../assets/icon/add-cart.png")}
+                                style={styles.cartIc}
+                            />
+                        </TouchableOpacity>
                     </View>
                 </View>
             )
         }
         return (
             <View>
-                 <CategoriesList
+                <CategoriesList
                     data={nearbyDeals}
                     contentStyle={styles.popularItemList}
                     renderItem={renderItem}

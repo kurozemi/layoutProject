@@ -15,8 +15,21 @@ const styles = StyleSheet.create({
         marginHorizontal: 24
     },
     ic: {
-        width: 24,
+        width:24,
         height:24,
+    },
+    cartIc: {
+        width: 32,
+        height:32,
+    },
+    popularCartBtn: {
+        position:'absolute',
+        right: 0,
+        top: '40%'
+    },
+    nearbyCartBtn: {
+        position:'absolute',
+        right: 0,
     },
     locationIcContainer: { 
         width: 50, 

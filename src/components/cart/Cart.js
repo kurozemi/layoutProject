@@ -26,6 +26,11 @@ const Cart = ({ navigation }) => {
 
     const [cartDetails, setCartDetails] = useState(cartData);
 
+    const [finalPrice, setFinalPrice] = useState(0);
+
+    useEffect(() => {
+        console.log('final Price: ', finalPrice);
+    }, [finalPrice])
     return (
 
         <SafeAreaView style = {styles.main}>
@@ -38,6 +43,8 @@ const Cart = ({ navigation }) => {
                 />
                 <CartDetails
                     cart={cartDetails}
+                    discount = {10}
+                    setFinalPrice = {setFinalPrice}
                     setCartDetails={setCartDetails}
                 />
             </View>
