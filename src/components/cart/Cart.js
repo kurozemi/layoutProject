@@ -1,9 +1,11 @@
-import React, { useState,useEffect } from 'react';
-import { View, Text, SafeAreaView, Image, FlatList, TextInput } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { View, Text, SafeAreaView, Image, FlatList, TextInput, TouchableOpacity, Keyboard, ScrollView } from 'react-native'
 import styles from './Cart.style'
 
 //screen components
 import CartDetails from './cartDetails/CartDetails';
+import Header from './header/Header';
+import Address from './address/Address';
 // € 
 const cartData = [
     {
@@ -20,41 +22,26 @@ const cartData = [
     },
 
 ]
-const Header = ({ title, subTitle }) => {
-    return (
-        <View style={styles.headerRow}>
-            <View style={styles.backBtn}>
-                <Image
-                    style={styles.arrowIc}
-                    source={require("../../assets/icon/left-arrow.png")}
-                />
-            </View>
-            <View>
-                <Text style={styles.mainTitle}>{title}</Text>
-                <Text style={styles.subTitle}>{subTitle}</Text>
-            </View>
-        </View>
-    )
-}
-
-
-const Cart = () => {
+const Cart = ({ navigation }) => {
 
     const [cartDetails, setCartDetails] = useState(cartData);
 
-    // useEffect(() => {
-    //     console.log('cart Details: ', cartDetails);
-    // }, [cartDetails])
     return (
-        <SafeAreaView style={styles.main}>
-            <Header
-                title="McDonald's"
-                subTitle="Bodakdev"
-            />
-            <CartDetails
-            cart = {cartDetails}
-            setCartDetails = {setCartDetails}
-            />
+
+        <SafeAreaView style = {styles.main}>
+            <View
+            >
+                <Header
+                    title="McDonald's"
+                    subTitle="Bodakdev"
+                    navigation={navigation}
+                />
+                <CartDetails
+                    cart={cartDetails}
+                    setCartDetails={setCartDetails}
+                />
+            </View>
+            <Address />
         </SafeAreaView>
     )
 }

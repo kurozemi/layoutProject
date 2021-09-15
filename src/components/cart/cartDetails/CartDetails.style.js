@@ -1,18 +1,31 @@
 import { StyleSheet } from 'react-native'
+import { Dimensions } from 'react-native';
+
+const wp = Dimensions.get('window').width;
+const hp = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+    scrollView: {
+        paddingVertical: 8,
+        height: hp * 0.52,
+        backgroundColor: 'white',
+        paddingHorizontal: 24,
+        borderBottomLeftRadius: 18,
+        borderBottomRightRadius: 18,
+    },
+    ic: {
+        width: 18,
+        height:18,
+    },
     productRow: {
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 20,
         justifyContent:'space-between',
-        // borderBottomWidth: 2,
-        // paddingBottom: 20,
-        // borderColor:'#dbdbdb'
+        paddingBottom: 20,
     },
     seperator: {
         borderBottomWidth: 2,
-        paddingTop: 20,
         marginHorizontal: 8,
         borderColor:'#dbdbdb',
     },
@@ -38,33 +51,38 @@ const styles = StyleSheet.create({
     },
     quantityInput: {
         color:'red',
+        fontSize: 12,
         textAlign: "center",
         width: 60,
-        height: 26,
+        height: Platform.OS == "ios" ? 26: 36,
     },
     productPrice: {
       fontWeight: '600',
     },
     toPayPrice: {
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: 20,
+    },
+    bill: {
+        marginTop: 12,
     },
     billDetails: {
-        marginTop: 12,
+        marginBottom: 20,
     },
     rowTitle: {
         flexDirection:'row',
         justifyContent:'space-between',
-        alignItems:'center',
-        marginVertical: 12,
+        marginTop: 16,
     },
     boldTitle: {
         fontWeight:'600',
         fontSize: 20,
+        marginBottom: 16,
     },
     priceRow: {
         flexDirection:'row',
         justifyContent:'space-between',
+        alignItems:'center',
         marginBottom: 8,
     },
     priceTitle: {
@@ -72,7 +90,36 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontSize: 15,
     },
-
+    discountCodeRow: {
+        flexDirection: 'row',
+        marginTop: 18,
+        height: 42,
+        marginBottom: 30,
+    },
+    discountInp :{
+        flex:6,
+        borderStyle: 'dashed',
+        borderWidth: 2,
+        borderColor: '#dbdbdb',
+        textAlign: 'center',
+        fontSize: 15,
+        fontWeight: '600',
+        borderRadius: 8,
+    },
+    applyBtn: {
+        flex:4,
+        marginLeft: 12,
+        backgroundColor:'#ababab',
+        borderRadius: 8,
+        justifyContent:'center',
+        alignItems:'center',
+    }, 
+    apply: {
+        textTransform: 'uppercase',
+        fontWeight: '600',
+        // fontSize: 14,
+        color:'#fafafa'
+    },
 
 })
 

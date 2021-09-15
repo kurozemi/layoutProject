@@ -1,11 +1,10 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { View, Text, SafeAreaView, FlatList, TextInput,Keyboard } from 'react-native'
+import { View, Text, FlatList, TextInput, Image, TouchableOpacity, ScrollView } from 'react-native'
 import styles from './CartDetails.style'
 
-
-const ProductRow = ({ product, updateQuantity }) => {
-    const data = product.item;
+//Cart Component
+const ProductRow = ({ data, index, updateQuantity }) => {
+    console.log('data: ', data);
     return (
         <View>
             <View style={styles.productRow}>
@@ -19,8 +18,12 @@ const ProductRow = ({ product, updateQuantity }) => {
                         keyboardType="number-pad"
                         returnKeyType={'done'}
                         value={data.quantity}
-                        onChangeText={qty => updateQuantity(qty, product.index)}
-                        // clearTextOnFocus
+                        onChangeText={qty => updateQuantity(qty, index)}
+                        onEndEditing={(e) => {
+                            if (e.nativeEvent.text == "")
+                                updateQuantity("1", index)
+                        }}
+                        maxLength={2}
                     />
                 </View>
                 <View>
@@ -38,20 +41,34 @@ const CartList = ({ data, setCartDetails }) => {
         setCartDetails(tempCart);
     };
     return (
-        <FlatList
-            data={data}
-            renderItem={
-                item =>
-                    <ProductRow
-                        product={item}
-                        updateQuantity={updateQuantity}
-                    />
+        <View>
+            {
+                data.map((item, index) => <ProductRow
+                    data={item}
+                    index={index}
+                    updateQuantity={updateQuantity}
+                />
+                )
             }
-        />
+        </View>
     )
 }
 
+//Bill Component
 const BillDetails = ({ cart }) => {
+
+    const restaurantCharges = "3.00";
+    const deliveryFee = "1.00";
+    const discountPercent = "10";
+
+    const totalPrice = cart.map(item => item.price * item.quantity)
+        .reduce((total, price) =>
+            total + parseFloat(price)
+            , 0).toFixed(2);
+
+    const discount = totalPrice * (parseInt(discountPercent)) / 100;
+    const toPay = (totalPrice + parseFloat(restaurantCharges) + parseFloat(deliveryFee) - parseFloat(discount)).toFixed(2);
+    var newTitle = "";
 
     const renderPrice = (title, price, discount) => {
         if (title == "Discount") {
@@ -70,25 +87,15 @@ const BillDetails = ({ cart }) => {
             </View>
         )
     }
-    const totalPrice = cart.map(item => item.price * item.quantity)
-        .reduce((total, price) =>
-            total + parseFloat(price)
-            , 0).toFixed(2);
-
-    const restaurantCharges = "3.00";
-    const deliveryFee = "1.00";
-
-    const discountPercent = "10";
-    const discount = totalPrice * (parseInt(discountPercent)) / 100;
-
-    const toPay = (totalPrice + parseFloat(restaurantCharges) + parseFloat(deliveryFee) - parseFloat(discount)).toFixed(2);
     return (
-        <View style={styles.billDetails}>
-            <Text style={styles.boldTitle}>Bill Details</Text>
-            {renderPrice("Item Total", totalPrice)}
-            {renderPrice("Restaurant Charges", restaurantCharges)}
-            {renderPrice("Delivery Fee", deliveryFee)}
-            {renderPrice("Discount", discount, `${discountPercent}%`)}
+        <View style={styles.bill}>
+            <View style={styles.billDetails}>
+                <Text style={styles.boldTitle}>Bill Details</Text>
+                {renderPrice("Item Total", totalPrice)}
+                {renderPrice("Restaurant Charges", restaurantCharges)}
+                {renderPrice("Delivery Fee", deliveryFee)}
+                {renderPrice("Discount", discount, `${discountPercent}%`)}
+            </View>
             <View style={styles.seperator}></View>
             <View style={styles.rowTitle}>
                 <Text style={styles.boldTitle}>To Pay</Text>
@@ -97,24 +104,52 @@ const BillDetails = ({ cart }) => {
         </View>
     )
 }
+
+//Additional Information Component
+const RequestDiscount = () => {
+    return (
+        <View>
+            <View style={styles.seperator}></View>
+            <View style={styles.rowTitle}>
+                <Text style={styles.priceTitle}>Any request for the restaurant?</Text>
+                <Image
+                    style={styles.ic}
+                    source={require("../../../assets/icon/note.png")}
+                />
+            </View>
+            <View style={styles.discountCodeRow}>
+                <TextInput
+                    style={styles.discountInp}
+                    placeholder="Enter discount code"
+                />
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={styles.applyBtn}
+                >
+                    <Text style={styles.apply}>Apply</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    )
+}
+//Main Component
 const CartDetails = ({ cart, setCartDetails }) => {
 
     return (
-        <TouchableOpacity
-        style = {{flex:1}}
-        activeOpacity = {1}
-        onPress = {() => Keyboard.dismiss()}
+
+        <ScrollView
+            style={styles.scrollView}
         >
-            <View>
-                <CartList
-                    data={cart}
-                    setCartDetails={setCartDetails}
-                />
-                <BillDetails
-                    cart={cart}
-                />
-            </View>
-        </TouchableOpacity>
+
+            <CartList
+                data={cart}
+                setCartDetails={setCartDetails}
+            />
+            <BillDetails
+                cart={cart}
+            />
+            <RequestDiscount />
+        </ScrollView>
     )
 }
 
