@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "645532537843",
-    "project_id": "layoutproject-74437",
-    "storage_bucket": "layoutproject-74437.appspot.com"
+    "project_number": "901702125108",
+    "project_id": "layoutproject-5fd2c",
+    "storage_bucket": "layoutproject-5fd2c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:645532537843:android:d0ffa170451da442a53886",
+        "mobilesdk_app_id": "1:901702125108:android:7a2601c2567f0127836c61",
         "android_client_info": {
           "package_name": "com.layoutproject"
         }
       },
       "oauth_client": [
         {
-          "client_id": "645532537843-7tfbvrbcgucctbgdku6upldke088sgr9.apps.googleusercontent.com",
+          "client_id": "901702125108-sj3u8hb4firnurrj63voiqamnpqceaeg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAxkeVbBU1uDvp6blWoBTPHAlMsCj46Otc"
+          "current_key": "AIzaSyAWj4CGGv_7BeZMmVottqpOroTi4JQ_Voo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "645532537843-7tfbvrbcgucctbgdku6upldke088sgr9.apps.googleusercontent.com",
+              "client_id": "901702125108-sj3u8hb4firnurrj63voiqamnpqceaeg.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "901702125108-q4u3l464hqdqaka9mo4fa5j0d3g9vcq5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.layoutProject"
+              }
             }
           ]
         }

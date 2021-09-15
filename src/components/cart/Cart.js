@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, Image, FlatList, TextInput, TouchableOpacity, Keyboard, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, } from 'react-native'
 import styles from './Cart.style'
 
 import database from '@react-native-firebase/database';
@@ -28,8 +28,8 @@ const cartData = [
 const Cart = ({ navigation }) => {
 
 
-    const reference = database().ref();
-    reference.once('value')
+    const reference = database().ref("/Cart");
+    reference.child("name").once('value')
         .then(snapshot => {
             console.log('hello');
         })

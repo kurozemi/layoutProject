@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* layoutProjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* layoutProjectTests.m */; };
-		04C6225626F1DAE8004CDC63 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04C6225526F1DAE8004CDC63 /* GoogleService-Info.plist */; };
+		04EEA55D26F1F5D600BF5418 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04EEA55C26F1F5D600BF5418 /* GoogleService-Info.plist */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -31,7 +31,7 @@
 		00E356EE1AD99517003FC87E /* layoutProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = layoutProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* layoutProjectTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = layoutProjectTests.m; sourceTree = "<group>"; };
-		04C6225526F1DAE8004CDC63 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		04EEA55C26F1F5D600BF5418 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0BBB477B9D64E2DE3E074E53 /* Pods-layoutProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-layoutProject.release.xcconfig"; path = "Target Support Files/Pods-layoutProject/Pods-layoutProject.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* layoutProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = layoutProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = layoutProject/AppDelegate.h; sourceTree = "<group>"; };
@@ -91,9 +91,9 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				04EEA55C26F1F5D600BF5418 /* GoogleService-Info.plist */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
-				04C6225526F1DAE8004CDC63 /* GoogleService-Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = layoutProject;
@@ -248,7 +248,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				04C6225626F1DAE8004CDC63 /* GoogleService-Info.plist in Resources */,
+				04EEA55D26F1F5D600BF5418 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
