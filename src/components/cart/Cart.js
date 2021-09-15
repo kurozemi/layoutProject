@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, Image, FlatList, TextInput, TouchableOpacity, Keyboard, ScrollView } from 'react-native'
 import styles from './Cart.style'
 
+import database from '@react-native-firebase/database';
+
 //screen components
 import CartDetails from './cartDetails/CartDetails';
 import Header from './header/Header';
@@ -22,18 +24,23 @@ const cartData = [
     },
 
 ]
+
 const Cart = ({ navigation }) => {
+
+
+    const reference = database().ref();
+    reference.once('value')
+        .then(snapshot => {
+            console.log('hello');
+        })
 
     const [cartDetails, setCartDetails] = useState(cartData);
 
     const [finalPrice, setFinalPrice] = useState(0);
 
-    useEffect(() => {
-        console.log('final Price: ', finalPrice);
-    }, [finalPrice])
     return (
 
-        <SafeAreaView style = {styles.main}>
+        <SafeAreaView style={styles.main}>
             <View
             >
                 <Header
@@ -43,8 +50,8 @@ const Cart = ({ navigation }) => {
                 />
                 <CartDetails
                     cart={cartDetails}
-                    discount = {10}
-                    setFinalPrice = {setFinalPrice}
+                    discount={10}
+                    setFinalPrice={setFinalPrice}
                     setCartDetails={setCartDetails}
                 />
             </View>

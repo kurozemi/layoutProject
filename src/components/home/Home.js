@@ -40,16 +40,16 @@ const popularItem = [
 const nearbyDeals = [
     {
         image: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/nachos-supreme-vertical-2-1547669252.png?crop=1xw:1xh;center,top&resize=480:*',
-        name: 'McDonald\'s',
-        subTitle: 'Mexican Creammy nachos',
+        restaurant: 'McDonald\'s',
+        name: 'Mexican Creammy nachos',
         price: "15.20",
         discount: "13.70",
         discountPercent: 10
     },
     {
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCIhgPK1nBiWim1Lz1op6CBxPV0CTnGhwceg&usqp=CAU',
-        name: 'McDonald\'s',
-        subTitle: 'Mexican Creammy nachos',
+        restaurant: 'McDonald\'s',
+        name: 'Mexican Creammy nachos',
         price: "10.50",
         discount: "10.00",
         discountPercent: 5
@@ -165,8 +165,8 @@ const Home = () => {
                             <Text style={styles.discountPercent}>{item.discountPercent}% OFF</Text>
                         </View>
                     </View>
-                    <Text style={styles.nearbyDealsTitle}>{item.name}</Text>
-                    <Text style={styles.nearbyDealsSubTitle}>{item.subTitle}</Text>
+                    <Text style={styles.nearbyDealsTitle}>{item.restaurant}</Text>
+                    <Text style={styles.nearbyDealsSubTitle}>{item.name}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={styles.price}>€ {item.price}</Text>
                         <Text style={styles.discount}>€ {item.discount}</Text>
