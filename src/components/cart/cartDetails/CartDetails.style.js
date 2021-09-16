@@ -7,7 +7,7 @@ const hp = Dimensions.get('window').height;
 const styles = StyleSheet.create({
     scrollView: {
         paddingVertical: 8,
-        height: hp * 0.52,
+        height: hp * 0.55,
         backgroundColor: 'white',
         paddingHorizontal: 24,
         borderBottomLeftRadius: 18,

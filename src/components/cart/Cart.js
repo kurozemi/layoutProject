@@ -30,8 +30,8 @@ const Cart = ({ navigation }) => {
 
     const reference = database().ref("/Cart");
     reference.child("name").once('value')
-        .then(snapshot => {
-            console.log('hello');
+        .then(function (snapshot) {
+            console.log(snapshot.val());
         })
 
     const [cartDetails, setCartDetails] = useState(cartData);
