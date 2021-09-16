@@ -5,6 +5,8 @@
 - User can change quality of item or delete an item from cart
 - The price will be calculate dynamically
 - Change address for the order
+- Empty cart
+- Complete the order
 
 **[BACKLOG]**
 - Home and cart are both listening from real time database (bandwitch consuming)
