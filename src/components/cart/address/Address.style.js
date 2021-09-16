@@ -40,6 +40,10 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#ababab'
     },
+    addressInput: {
+        width:'80%',
+        fontWeight: '600',
+    },
     paymentBtn:{
         marginTop: 16,
         width: '100%',

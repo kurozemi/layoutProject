@@ -14,6 +14,19 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 18,
         borderBottomRightRadius: 18,
     },
+    deleteIc: {
+        width: 14,
+        height: 14,
+    },
+    deleteItem: {
+        position:'absolute',
+        right: 0,
+        top: 8,
+        justifyContent:'center',
+        alignItems:'center',
+        width: 30,
+        height:30,
+    },
     ic: {
         width: 18,
         height: 18,
@@ -21,7 +34,7 @@ const styles = StyleSheet.create({
     productRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 30,
         justifyContent: 'space-between',
         paddingBottom: 20,
     },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, Image, Touchable, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity,TextInput } from 'react-native'
 import styles from './Cart.style'
 
 import database from '@react-native-firebase/database';
@@ -10,13 +10,13 @@ import Header from './header/Header';
 import Address from './address/Address';
 import EmptyCart from './emptyCart/EmptyCart';
 
-const reference = database().ref("/Cart");
+const reference = database().ref();
 
 const Cart = ({ navigation }) => {
 
     var cart = [];
     useEffect(() => {
-        const onValueChange = reference
+        const onValueChange = reference.child("Cart")
             //get data whenever there's a change in database
             .on("value", snapshot => {
                 let value = snapshot.val();
@@ -33,12 +33,26 @@ const Cart = ({ navigation }) => {
         return () => reference.off('value', onValueChange);
     }, [])
 
+    const makePayment = () => {
+        const order = {
+            cart: cartDetails,
+            finalPrice: finalPrice,
+            address: address
+        };
+        reference.child("Order").push(order);
+        reference.child("Cart").remove();
 
+        setAddress("201, Dev mall, near iskan cross roadssss");
+        setIsChangeAddress(false);
+        navigation.navigate("Explore");
+        alert("Order complete")
+    }
 
     const [cartDetails, setCartDetails] = useState([]);
 
+    const [isChangeAddress, setIsChangeAddress] = useState(false);
+    const [address, setAddress] = useState("201, Dev mall, near iskan cross roadssss");
     const [finalPrice, setFinalPrice] = useState(0);
-
     return (
 
         <SafeAreaView style={styles.main}>
@@ -59,9 +73,50 @@ const Cart = ({ navigation }) => {
                             cart={cartDetails}
                             discount={10}
                             setFinalPrice={setFinalPrice}
-                            reference={reference}
+                            reference={reference.child("Cart")}
                         />
-                        <Address />
+                        <View style={styles.paymentMain}>
+                            <View style={styles.deliveryRow}>
+                                <View style={styles.titleRow}>
+                                    <Image
+                                        style={styles.ic}
+                                        source={require("../../assets/icon/suitcase.png")}
+                                    />
+                                    <Text style={styles.title}>Delivery to Work</Text>
+                                </View>
+                                <TouchableOpacity
+                                    onPress={() => setIsChangeAddress(!isChangeAddress)}
+                                    activeOpacity={0.7}
+                                >
+                                    <Text style={styles.change}>Change</Text>
+                                </TouchableOpacity>
+                            </View>
+                            {
+                                isChangeAddress ?
+                                    <TextInput
+                                        editable={isChangeAddress}
+                                        numberOfLines={1}
+                                        value={address}
+                                        autoFocus
+                                        onChangeText={text => setAddress(text)}
+                                        style={styles.addressInput} />
+                                    :
+                                    <Text
+                                        numberOfLines={1}
+                                        style={styles.address}
+                                    >
+                                        {address}
+                                    </Text>
+                            }
+                            <TouchableOpacity
+                                onPress = {makePayment}
+                                style={styles.paymentBtn}
+                            >
+                                <Text
+                                    style={styles.payment}
+                                >Make Payment</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
 
             }

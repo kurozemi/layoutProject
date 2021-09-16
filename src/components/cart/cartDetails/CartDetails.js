@@ -3,9 +3,17 @@ import { View, Text, FlatList, TextInput, Image, TouchableOpacity, ScrollView } 
 import styles from './CartDetails.style'
 
 //Cart Component
-const ProductRow = ({ data, updateQuantity }) => {
+const ProductRow = ({ data, updateQuantity, deleteItem }) => {
     return (
         <View>
+            <TouchableOpacity
+                onPress={() => deleteItem(data.id)}
+                style={styles.deleteItem}>
+                <Image
+                    style={styles.deleteIc}
+                    source={require("../../../assets/icon/cancel.png")}
+                />
+            </TouchableOpacity>
             <View style={styles.productRow}>
                 <View style={styles.productTitle}>
                     <Text
@@ -39,6 +47,9 @@ const ProductRow = ({ data, updateQuantity }) => {
     )
 }
 const CartList = ({ data, reference }) => {
+    const deleteItem = (id) => {
+        reference.child(id).remove();
+    }
     const updateQuantity = (type, id, quantity) => {
         let newQuantity = quantity;
 
@@ -65,6 +76,7 @@ const CartList = ({ data, reference }) => {
                 data.map(item => <ProductRow
                     data={item}
                     key={item.id}
+                    deleteItem={deleteItem}
                     updateQuantity={updateQuantity}
                 />
                 )
@@ -164,22 +176,23 @@ const RequestDiscount = () => {
 const CartDetails = (props) => {
 
     return (
-
-        <ScrollView
-            keyboardDismissMode
-            style={styles.scrollView}
-        >
-            <CartList
-                data={props.cart}
-                reference={props.reference}
-            />
-            <BillDetails
-                discount={props.discount}
-                setFinalPrice={props.setFinalPrice}
-                cart={props.cart}
-            />
-            <RequestDiscount />
-        </ScrollView>
+        <View>
+            <ScrollView
+                keyboardDismissMode
+                style={styles.scrollView}
+            >
+                <CartList
+                    data={props.cart}
+                    reference={props.reference}
+                />
+                <BillDetails
+                    discount={props.discount}
+                    setFinalPrice={props.setFinalPrice}
+                    cart={props.cart}
+                />
+                <RequestDiscount />
+            </ScrollView>
+        </View>
     )
 }
 
