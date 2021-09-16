@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { StyleSheet } from 'react-native'
 import { Dimensions } from 'react-native';
 
@@ -6,8 +7,8 @@ const hp = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     scrollView: {
-        paddingVertical: 8,
-        height: hp * 0.55,
+        paddingBottom: 8,
+        height: Platform.OS == "ios" ? hp * 0.53 : hp * 0.55,
         backgroundColor: 'white',
         paddingHorizontal: 24,
         borderBottomLeftRadius: 18,
@@ -15,28 +16,28 @@ const styles = StyleSheet.create({
     },
     ic: {
         width: 18,
-        height:18,
+        height: 18,
     },
     productRow: {
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 20,
-        justifyContent:'space-between',
+        justifyContent: 'space-between',
         paddingBottom: 20,
     },
     seperator: {
         borderBottomWidth: 2,
         marginHorizontal: 8,
-        borderColor:'#dbdbdb',
+        borderColor: '#dbdbdb',
     },
     cartList: {
-        marginTop:16,
-    }, 
+        marginTop: 16,
+    },
     productTitle: {
-        width:116,
+        width: wp * 0.3,
     },
     productName: {
-        fontWeight:'500',
+        fontWeight: '500',
         fontSize: 16,
     },
     productType: {
@@ -45,19 +46,32 @@ const styles = StyleSheet.create({
         paddingTop: 4,
     },
     quantity: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
         borderWidth: 1,
         borderColor: 'red',
+        // width: 60,
         borderRadius: 6,
+        paddingVertical: 6,
+    },
+    updateBtn: {
+        // backgroundColor:'blue',
+        paddingHorizontal: 14,
     },
     quantityInput: {
-        color:'red',
-        fontSize: 12,
+        fontSize: 16,
+        color: 'red',
         textAlign: "center",
-        width: 60,
-        height: Platform.OS == "ios" ? 26: 36,
+    },
+    billPrice: {
+        textAlign:'right',
+        fontWeight: '600',
     },
     productPrice: {
-      fontWeight: '600',
+        width: wp * 0.2,
+        textAlign:'right',
+        fontWeight: '600',
     },
     toPayPrice: {
         fontWeight: 'bold',
@@ -70,19 +84,19 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     rowTitle: {
-        flexDirection:'row',
-        justifyContent:'space-between',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         marginTop: 16,
     },
     boldTitle: {
-        fontWeight:'600',
+        fontWeight: '600',
         fontSize: 20,
         marginBottom: 16,
     },
     priceRow: {
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: 8,
     },
     priceTitle: {
@@ -96,8 +110,8 @@ const styles = StyleSheet.create({
         height: 42,
         marginBottom: 30,
     },
-    discountInp :{
-        flex:6,
+    discountInp: {
+        flex: 6,
         borderStyle: 'dashed',
         borderWidth: 2,
         borderColor: '#dbdbdb',
@@ -107,18 +121,18 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     applyBtn: {
-        flex:4,
+        flex: 4,
         marginLeft: 12,
-        backgroundColor:'#ababab',
+        backgroundColor: '#ababab',
         borderRadius: 8,
-        justifyContent:'center',
-        alignItems:'center',
-    }, 
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     apply: {
         textTransform: 'uppercase',
         fontWeight: '600',
         // fontSize: 14,
-        color:'#fafafa'
+        color: '#fafafa'
     },
 
 })

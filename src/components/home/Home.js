@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, Image, FlatList, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import database from '@react-native-firebase/database';
 import styles from "./Home.style"
 
 const topCategories = [
@@ -23,22 +24,27 @@ const topCategories = [
 ]
 const popularItem = [
     {
+        id: 'Product01',
         image: 'https://www.onceuponachef.com/images/2020/05/best-grilled-chicken-scaled.jpg',
         name: 'Grilled Chicken',
         restaurant: 'KFC',
         price: "15.20",
+        discountPercent: null,
         discount: "14.20",
     },
     {
+        id: 'Product02',
         image: 'https://www.recipetineats.com/wp-content/uploads/2020/01/Fried-Chicken_2-SQ.jpg',
         name: 'Fried Chicken',
         restaurant: 'Jolibee',
         price: "8.0",
+        discountPercent: null,
         discount: "7.20",
     }
 ]
 const nearbyDeals = [
     {
+        id: 'Product03',
         image: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/nachos-supreme-vertical-2-1547669252.png?crop=1xw:1xh;center,top&resize=480:*',
         restaurant: 'McDonald\'s',
         name: 'Mexican Creammy nachos',
@@ -47,6 +53,7 @@ const nearbyDeals = [
         discountPercent: 10
     },
     {
+        id: 'Product04',
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCIhgPK1nBiWim1Lz1op6CBxPV0CTnGhwceg&usqp=CAU',
         restaurant: 'McDonald\'s',
         name: 'Mexican Creammy nachos',
@@ -69,11 +76,48 @@ const CategoriesList = ({ data, contentStyle, renderItem }) => {
         </View>
     )
 }
+
+const reference = database().ref("/Cart");
 const Home = () => {
 
+    var cart = [];
+    useEffect(() => {
+        //get cart info from database
+        const onValueChange = reference
+            //get data whenever there's a change in database
+            .on("value", snapshot => {
+                let value = snapshot.val();
+                //initilize cart variable
+                cart = [];
+                if (value != null) {
+                    for (let key in value) {
+                        cart.push(value[key]);
+                    }
+                }
+            })
+        return () => reference.off('value', onValueChange);
+    }, [])
     const addToCart = (item) => {
+        var isExists = false;
+        cart.forEach((product) => {
+            //update item
+            if (product.id == item.id) {
+                reference.child(item.id).update({
+                    quantity: (product.quantity + 1),
+                })
+                isExists = true;
+            }
+        });
 
+        //new item
+        if (!isExists) {
+            reference.child(item.id).set(item);
+            reference.child(item.id).update({
+                quantity: 1,
+            })
+        }
     }
+
     const renderHeader = () => {
         return (
             <View style={styles.headerContainer}>

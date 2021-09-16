@@ -3,27 +3,32 @@ import { View, Text, FlatList, TextInput, Image, TouchableOpacity, ScrollView } 
 import styles from './CartDetails.style'
 
 //Cart Component
-const ProductRow = ({ data, index, updateQuantity }) => {
+const ProductRow = ({ data, updateQuantity }) => {
     return (
         <View>
             <View style={styles.productRow}>
                 <View style={styles.productTitle}>
-                    <Text style={styles.productName}>{data.name}</Text>
-                    <Text style={styles.productType}>{data.type}</Text>
+                    <Text
+                        numberOfLines={1}
+                        style={styles.productName}>{data.name}</Text>
+                    <Text style={styles.productType}>{data.restaurant}</Text>
                 </View>
                 <View style={styles.quantity}>
-                    <TextInput
+                    <TouchableOpacity
+                        style={styles.updateBtn}
+                        onPress={() => updateQuantity('-', data.id, data.quantity)}
+                    >
+                        <Text style={{ color: 'red' }}>-</Text>
+                    </TouchableOpacity>
+                    <Text
                         style={styles.quantityInput}
-                        keyboardType="number-pad"
-                        returnKeyType={'done'}
-                        value={data.quantity}
-                        onChangeText={qty => updateQuantity(qty, index)}
-                        onEndEditing={(e) => {
-                            if (e.nativeEvent.text == "")
-                                updateQuantity("1", index)
-                        }}
-                        maxLength={2}
-                    />
+                    >{data.quantity}</Text>
+                    <TouchableOpacity
+                        style={styles.updateBtn}
+                        onPress={() => updateQuantity('+', data.id, data.quantity)}
+                    >
+                        <Text style={{ color: 'red' }}>+</Text>
+                    </TouchableOpacity>
                 </View>
                 <View>
                     <Text style={styles.productPrice}>€{data.price}</Text>
@@ -33,19 +38,33 @@ const ProductRow = ({ data, index, updateQuantity }) => {
         </View>
     )
 }
-const CartList = ({ data, setCartDetails }) => {
-    const updateQuantity = (newQuantity, index) => {
-        let tempCart = Array.from(data);
-        tempCart[index].quantity = newQuantity;
-        setCartDetails(tempCart);
+const CartList = ({ data, reference }) => {
+    const updateQuantity = (type, id, quantity) => {
+        let newQuantity = quantity;
+
+        const MAX_ITEM_ALLOWED = 9;
+        const MIN_ITEM_ALLOWED = 1;
+
+        if (type == "-" && quantity > MIN_ITEM_ALLOWED) {
+            newQuantity = quantity - 1;
+        }
+        else if (type == "+" && quantity < MAX_ITEM_ALLOWED) {
+            newQuantity = quantity + 1;
+        }
+
+        reference.child(id).update({
+            quantity: newQuantity,
+        })
+        // let tempCart = Array.from(data);
+        // tempCart[index].quantity = parseInt(newQuantity);
+        // setCartDetails(tempCart);
     };
     return (
         <View>
             {
-                data.map((item, index) => <ProductRow
+                data.map(item => <ProductRow
                     data={item}
-                    key={index}
-                    index = {index}
+                    key={item.id}
                     updateQuantity={updateQuantity}
                 />
                 )
@@ -88,7 +107,7 @@ const BillDetails = (props) => {
                 <Text style={styles.priceTitle}>
                     {title != "Discount" ? title : newTitle}
                 </Text>
-                <Text style={styles.productPrice}>
+                <Text style={styles.billPrice}>
                     {title == "Discount"
                         ? "- "
                         : ""}€{price}
@@ -150,10 +169,9 @@ const CartDetails = (props) => {
             keyboardDismissMode
             style={styles.scrollView}
         >
-
             <CartList
                 data={props.cart}
-                setCartDetails={props.setCartDetails}
+                reference={props.reference}
             />
             <BillDetails
                 discount={props.discount}

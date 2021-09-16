@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
     headerRow: {
         flexDirection: 'row',
         padding: 24,
-        paddingBottom: 4,
+        paddingBottom: 12,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor:'white',
