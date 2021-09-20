@@ -79,43 +79,27 @@ const CategoriesList = ({ data, contentStyle, renderItem }) => {
 
 const reference = database().ref("/Cart");
 const Home = () => {
-
-    var cart = [];
-    useEffect(() => {
-        //get cart info from database
-        const onValueChange = reference
-            //get data whenever there's a change in database
-            .on("value", snapshot => {
-                let value = snapshot.val();
-                //initilize cart variable
-                cart = [];
-                if (value != null) {
-                    for (let key in value) {
-                        cart.push(value[key]);
-                    }
-                }
-            })
-        return () => reference.off('value', onValueChange);
-    }, [])
     const addToCart = (item) => {
-        var isExists = false;
-        cart.forEach((product) => {
-            //update item
-            if (product.id == item.id) {
-                reference.child(item.id).update({
-                    quantity: (product.quantity + 1),
-                })
-                isExists = true;
-            }
-        });
 
-        //new item
-        if (!isExists) {
-            reference.child(item.id).set(item);
-            reference.child(item.id).update({
-                quantity: 1,
-            })
-        }
+        reference
+            .child(item.id)
+            .once('value')
+            .then(snapshot => {
+                //update exists item
+                if (snapshot.val() != null) {
+                    console.log('value: ', snapshot.val());
+                    reference.child(item.id)
+                    .update({quantity: snapshot.val().quantity +1});
+                }
+                //create new item
+                else {
+                    reference.child(item.id).set(item);
+                    reference.child(item.id).update({
+                        quantity: 1,
+                    })
+                }
+            }
+            )
     }
 
     const renderHeader = () => {

@@ -7,7 +7,6 @@ import database from '@react-native-firebase/database';
 //screen components
 import CartDetails from './cartDetails/CartDetails';
 import Header from './header/Header';
-import Address from './address/Address';
 import EmptyCart from './emptyCart/EmptyCart';
 
 const reference = database().ref();
@@ -34,8 +33,13 @@ const Cart = ({ navigation }) => {
     }, [])
 
     const makePayment = () => {
+        var cart = {}; 
+
+        cartDetails.forEach(product => {
+            cart[product.id] = product;
+        });
         const order = {
-            cart: cartDetails,
+            cart: cart,
             finalPrice: finalPrice,
             address: address
         };

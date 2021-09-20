@@ -147,6 +147,8 @@ const BillDetails = (props) => {
 
 //Additional Information Component
 const RequestDiscount = () => {
+
+    var discountCode = "";
     return (
         <View>
             <View style={styles.seperator}></View>
@@ -159,6 +161,8 @@ const RequestDiscount = () => {
             </View>
             <View style={styles.discountCodeRow}>
                 <TextInput
+                    value = {discountCode}
+                    onChangeText = {discount => discountCode = discount}
                     style={styles.discountInp}
                     placeholder="Enter discount code"
                 />
