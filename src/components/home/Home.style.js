@@ -184,7 +184,15 @@ const styles = StyleSheet.create({
     },
     discountPercent: {
         color:'white',
-    }, 
+    },
+    fab: {
+        position:'absolute',
+        bottom:50,
+        width:150,
+        height: 150,
+        zIndex: 100,
+        right: 0,
+    },
 })
 
 export default styles;

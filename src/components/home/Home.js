@@ -78,7 +78,7 @@ const CategoriesList = ({ data, contentStyle, renderItem }) => {
 }
 
 const reference = database().ref("/Cart");
-const Home = () => {
+const Home = ({navigation}) => {
     const addToCart = (item) => {
 
         reference
@@ -221,10 +221,25 @@ const Home = () => {
             </View>
         )
     }
+    const renderFAB = () => {
+        return (
+            <TouchableOpacity
+            style={styles.fab}
+            onPress = {() => navigation.navigate("DuHoc")}
+            >
+                <Image
+                resizeMode="contain"
+                style = {{width: '100%', height: '100%'}}
+                source = {require("../../assets/icon/fab.png")}
+                />
+            </TouchableOpacity>
+        )
+    }
 
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            {renderFAB()}
             <ScrollView
                 bounces={false}
             >
@@ -249,7 +264,7 @@ const Home = () => {
                         <Text style={styles.title}>Nearby Deals</Text>
                         <Text style={styles.subTitle}>View all</Text>
                     </View>
-                    {renderNearbyDealsList()}
+                    {/* {renderNearbyDealsList()} */}
                 </View>
             </ScrollView>
         </SafeAreaView>
