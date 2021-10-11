@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
 import BottomTabs from "../navigation/BottomTabNavigation"
 import DuHoc from "../components/duhoc/DuHoc";
+import Profile from "../components/profile/Profile";
 
 const AppNavigation = () => {
     const Stack = createNativeStackNavigator();

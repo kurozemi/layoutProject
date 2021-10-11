@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 //screen components
 import Home from "../components/home/Home"
 import Cart from "../components/cart/Cart"
+import Profile from "../components/profile/Profile";
 
 const Tab = createBottomTabNavigator();
 
@@ -92,7 +93,7 @@ const BottomTabNavigation = () => {
                     )
 
                 }} />
-            <Tab.Screen name="User" component={Home}
+            <Tab.Screen name="User" component={Profile}
                 options={{
                     tabBarIcon: (focused) => (
                         <Image source={require("../assets/icon/user.jpg")} style={{ width: 30, height: 30, tintColor:focused ? 'white':'black' }} />

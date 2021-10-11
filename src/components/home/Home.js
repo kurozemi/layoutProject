@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import database from '@react-native-firebase/database';
 import styles from "./Home.style"
 
+
 const topCategories = [
     {
         image: "https://i.ytimg.com/vi/PCAwJs51D0k/maxresdefault.jpg",
@@ -78,7 +79,9 @@ const CategoriesList = ({ data, contentStyle, renderItem }) => {
 }
 
 const reference = database().ref("/Cart");
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
+
+    
     const addToCart = (item) => {
 
         reference
@@ -89,7 +92,7 @@ const Home = ({navigation}) => {
                 if (snapshot.val() != null) {
                     console.log('value: ', snapshot.val());
                     reference.child(item.id)
-                    .update({quantity: snapshot.val().quantity +1});
+                        .update({ quantity: snapshot.val().quantity + 1 });
                 }
                 //create new item
                 else {
@@ -224,13 +227,13 @@ const Home = ({navigation}) => {
     const renderFAB = () => {
         return (
             <TouchableOpacity
-            style={styles.fab}
-            onPress = {() => navigation.navigate("DuHoc")}
+                style={styles.fab}
+                onPress={() => navigation.navigate("DuHoc")}
             >
                 <Image
-                resizeMode="contain"
-                style = {{width: '100%', height: '100%'}}
-                source = {require("../../assets/icon/fab.png")}
+                    resizeMode="contain"
+                    style={{ width: '100%', height: '100%' }}
+                    source={require("../../assets/icon/fab.png")}
                 />
             </TouchableOpacity>
         )
