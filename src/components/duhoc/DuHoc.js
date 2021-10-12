@@ -1,31 +1,32 @@
 import React from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Image, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, Image, ScrollView, Platform } from 'react-native'
 import { Dimensions } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowHeight = Dimensions.get('window').height + 50;
 const DuHoc = () => {
     return (
         <ScrollView
             bounces={false}
-            style={styles.scrollView}>
+            contentContainerStyle={styles.scrollView}
+            >
 
             <Image
-                style={{ width: '100%', height: windowHeight }}
+                style={{ width: '100%', height: windowHeight}}
                 source={require("../../assets/icon/trang1.gif")}
             />
 
             <Image
-                style={{ width: '100%', height: 844 }}
+                style={{ width: '100%', height: windowHeight }}
                 source={require("../../assets/icon/trang2.gif")}
             />
 
             <Image
-                style={{ width: '100%', height: 844 }}
+                style={{ width: '100%', height: windowHeight }}
                 source={require("../../assets/icon/trang3.gif")}
             />
 
             <Image
-                style={{ width: '100%', height: 844 }}
+                style={{ width: '100%', height: windowHeight }}
                 source={require("../../assets/icon/trang4.gif")}
             />
 
@@ -38,9 +39,9 @@ const styles = StyleSheet.create({
     main: {
         flex: 1,
     },
-    // scrollView: {
-    //     flex: 1,
-    // },
+    scrollView: {
+        // paddingTop: 16,
+    },
 })
 
 export default DuHoc;
