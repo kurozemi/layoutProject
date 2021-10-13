@@ -4,6 +4,7 @@ import styles from './Profile.style'
 import Contacts from 'react-native-contacts';
 import { PermissionsAndroid } from 'react-native';
 import { Platform } from 'react-native';
+import Draggable from 'react-native-draggable';
 
 
 const Profile = () => {
@@ -36,8 +37,6 @@ const Profile = () => {
                     'buttonPositive': 'Please accept bare mortal'
                 }
             )
-                // .then(Contacts.getAll().
-                //     then(res => console.log('hello: ', res)))
                 .then(response => {
                     if (response == "granted") {
                         Contacts.getAll().then(res =>
@@ -52,13 +51,10 @@ const Profile = () => {
                 console.log('response: ', response);
             })
         }
-        // Contacts.getAll().then(response => {
-        //     setContacts(response)
-        //     console.log('response: ', response);
-        // })
     }, [])
     return (
         <SafeAreaView style={styles.main}>
+            
             <FlatList
                 data={contacts}
                 renderItem={(item) => renderItem(item.item)}

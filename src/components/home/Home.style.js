@@ -188,10 +188,12 @@ const styles = StyleSheet.create({
     fab: {
         position:'absolute',
         bottom:50,
-        width:150,
-        height: 150,
+        // bottom:0,
+        width:120,
+        height: 120,
         zIndex: 100,
         right: 0,
+        // backgroundColor:'red',
     },
 })
 

@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TextInput, Image, FlatList, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import database from '@react-native-firebase/database';
+import Draggable from 'react-native-draggable';
 import styles from "./Home.style"
+import { Dimensions } from 'react-native';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
-
+console.log('window 30%: ', windowWidth * 0.3);
+console.log('window 60%: ', windowWidth * 0.6);
 const topCategories = [
     {
         image: "https://i.ytimg.com/vi/PCAwJs51D0k/maxresdefault.jpg",
@@ -81,7 +86,7 @@ const CategoriesList = ({ data, contentStyle, renderItem }) => {
 const reference = database().ref("/Cart");
 const Home = ({ navigation }) => {
 
-    
+
     const addToCart = (item) => {
 
         reference
@@ -225,17 +230,48 @@ const Home = ({ navigation }) => {
         )
     }
     const renderFAB = () => {
+
+        const [x, setX] = useState(windowWidth - 140);
+
+        const [y, setY] = useState(windowHeight - 300);
+
+
         return (
-            <TouchableOpacity
-                style={styles.fab}
-                onPress={() => navigation.navigate("DuHoc")}
+            <View
+                style={{ zIndex: 1000 }}
             >
-                <Image
-                    resizeMode="contain"
-                    style={{ width: '100%', height: '100%' }}
-                    source={require("../../assets/icon/fab.png")}
-                />
-            </TouchableOpacity>
+                <Draggable
+                    x={windowWidth - 140}
+                    y={windowHeight - 300}
+
+                    minX={0}
+                    minY={0}
+                    // shouldReverse={
+                    //     (x > (windowWidth * 0.3) && x < (windowWidth * 0.6))
+                    // }
+                    maxX={windowWidth}
+                    maxY={windowHeight - 150}
+
+                    // onDragRelease={
+                    //     (e, g, b) => {
+                    //         console.log('event: ', e.nativeEvent.pageX);
+                    //         console.log('bounds: ', b)
+                    //         setX(b.left);
+                    //         setY(b.top);
+                    //     }
+                    // }
+                    touchableOpacityProps=
+                    {{ activeOpacity: 0.8 }}
+                >
+                    <View style={{ width: 120, height: 120 }}>
+                        <Image
+                            resizeMode="contain"
+                            style={{ width: '100%', height: '100%' }}
+                            source={require("../../assets/icon/fab.png")}
+                        />
+                    </View>
+                </Draggable>
+            </View>
         )
     }
 
@@ -267,7 +303,7 @@ const Home = ({ navigation }) => {
                         <Text style={styles.title}>Nearby Deals</Text>
                         <Text style={styles.subTitle}>View all</Text>
                     </View>
-                    {/* {renderNearbyDealsList()} */}
+
                 </View>
             </ScrollView>
         </SafeAreaView>
