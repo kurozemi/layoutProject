@@ -1,65 +1,132 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, FlatList } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import styles from './Profile.style'
-import Contacts from 'react-native-contacts';
-import { PermissionsAndroid } from 'react-native';
-import { Platform } from 'react-native';
-import Draggable from 'react-native-draggable';
+
+import ReactNativeBiometrics from 'react-native-biometrics'
 
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
 
-    const [contacts, setContacts] = useState([]);
+    const [biometrics, setBiometrics] = useState(null);
+    const [isDisplayBio, setIsDisplayBio] = useState(true);
 
-    const renderItem = (contact) => {
-        return (
-            <View style={{ marginBottom: 24 }}>
-                <Text style={{ fontWeight: 'bold' }}>
-                    {contact.givenName} {contact.familyName}
-                </Text>
-                {
-                    contact.phoneNumbers.map((phone, index) => (
-                        <Text
-                            key={index}
-                        >{phone.label} : {phone.number}</Text>
-                    ))
+    const invalidToken = useRef(false);
+
+    const login = async () => {
+
+        if (invalidToken.current) {
+            console.log('delete invalid key when login success');
+            ReactNativeBiometrics.deleteKeys();
+        }
+
+        console.log('login successfully');
+        navigation.navigate("Home");
+        invalidToken.current = false;
+    }
+
+    const controlPrivateKey = async (callbackFunc) => {
+        const result = await ReactNativeBiometrics.biometricKeysExist()
+        const { keysExist } = result;
+
+        console.log('key exists: ', keysExist);
+
+        if (!keysExist) {
+            invalidToken.current = true;
+            setIsDisplayBio(false);
+            return;
+        }
+        callbackFunc && callbackFunc();
+    }
+
+    const validateFingerprint = async () => {
+
+        console.log('control fingerprint');
+
+        ReactNativeBiometrics.createSignature({
+            promptMessage: "Sign In",
+            payload: "hehe",
+        }).then(result => {
+            const { success, signature, error } = result;
+            invalidToken.current = false;
+            if (success) {
+                console.log(signature);
+                login()
+            }
+            if (error) {
+
+                console.log("e:", error);
+            }
+
+
+        }).catch(e => {
+            console.log('e: ', e.message);
+
+            invalidToken.current = true;
+
+            setIsDisplayBio(false);
+        })
+
+    }
+
+    const checkSensorAvailable = () => {
+        console.log('check sensor available');
+
+        ReactNativeBiometrics.isSensorAvailable()
+            .then(async (resultObject) => {
+                const { available, biometryType } = resultObject
+
+                if (available) {
+                    setBiometrics(biometryType);
+
+                    controlPrivateKey(validateFingerprint);
                 }
-            </View>
-        )
+
+
+            })
     }
     useEffect(() => {
-        if (!Platform.OS == "ios") {
-            PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-                {
-                    'title': 'Contacts',
-                    'message': 'This app would like to view your contacts.',
-                    'buttonPositive': 'Please accept bare mortal'
-                }
-            )
-                .then(response => {
-                    if (response == "granted") {
-                        Contacts.getAll().then(res =>
-                            setContacts(res)
-                        )
-                    }
-
-                })
-        } else {
-            Contacts.getAll().then(response => {
-                setContacts(response)
-                console.log('response: ', response);
-            })
-        }
+        checkSensorAvailable()
     }, [])
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', async () => {
+            // The screen is focused
+            setIsDisplayBio(true);
+            controlPrivateKey()
+
+        });
+        return unsubscribe;
+    }, [navigation]);
+
+
+
     return (
-        <SafeAreaView style={styles.main}>
-            
-            <FlatList
-                data={contacts}
-                renderItem={(item) => renderItem(item.item)}
-            />
-        </SafeAreaView>
+        <View style={styles.main}>
+            <TouchableOpacity
+                style={{
+                    borderWidth: 1,
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    borderRadius: 8,
+                }}
+                onPress={login}
+            >
+                <Text>Login</Text>
+            </TouchableOpacity>
+            {
+                isDisplayBio &&
+                <TouchableOpacity
+                    style={{ marginTop: 50 }}
+                    onPress={validateFingerprint}
+                >
+                    <Image
+                        style={{ width: 50, height: 50 }}
+                        source={require("../../assets/icon/fingerprint.png")}
+                    />
+
+                </TouchableOpacity>
+            }
+        </View >
     )
 }
 

@@ -15,8 +15,11 @@ const AppNavigation = () => {
                 screenOptions = {{headerShown: false}}
                 initialRouteName="Main"
             >
-                <Stack.Screen name="Main" component={BottomTabs}></Stack.Screen>
-                <Stack.Screen name="DuHoc" component={DuHoc}></Stack.Screen>
+                <Stack.Screen name="Main" component={Profile}></Stack.Screen>
+                <Stack.Screen name="Home" component={DuHoc}></Stack.Screen>
+
+                {/* <Stack.Screen name="Main" component={BottomTabs}></Stack.Screen>
+                <Stack.Screen name="DuHoc" component={DuHoc}></Stack.Screen> */}
             </Stack.Navigator>
         </NavigationContainer>
     )

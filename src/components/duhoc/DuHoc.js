@@ -1,47 +1,58 @@
-import React from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Image, ScrollView, Platform } from 'react-native'
-import { Dimensions } from 'react-native';
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height + 50;
-const DuHoc = () => {
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Switch } from 'react-native'
+import ReactNativeBiometrics from 'react-native-biometrics';
+
+
+const DuHoc = ({ navigation }) => {
+
+    const [enableFingerprint, setEnableFingerprint] = useState(false);
+
+    useEffect(() => {
+        ReactNativeBiometrics.biometricKeysExist().then(({keysExist}) => {
+            if (keysExist) {
+                setEnableFingerprint(true);
+            }
+        })
+    }, []);
+
+    const logout = () => {
+        navigation.navigate("Main");
+
+    }
     return (
-        <ScrollView
-            bounces={false}
-            contentContainerStyle={styles.scrollView}
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Text>Hello User</Text>
+
+            <Switch
+                value={enableFingerprint}
+                onValueChange={value => {
+                    if (value) {
+                        console.log('enable fingerprint');
+                        ReactNativeBiometrics.createKeys("Enable Fingerprints");
+                        setEnableFingerprint(true);
+                    }
+                    else {
+                        console.log('disable fingerprint');
+                        ReactNativeBiometrics.deleteKeys();
+                        setEnableFingerprint(false);
+
+                    }
+                }}
+            />
+            <TouchableOpacity
+                style={{
+                    borderWidth: 1,
+                    borderColor: "red",
+                    paddingHorizontal: 20,
+                    paddingVertical: 10, borderRadius: 8,
+                    marginTop: 20,
+                }}
+                onPress={logout}
             >
-
-            <Image
-                style={{ width: '100%', height: windowHeight}}
-                source={require("../../assets/icon/trang1.gif")}
-            />
-
-            <Image
-                style={{ width: '100%', height: windowHeight }}
-                source={require("../../assets/icon/trang2.gif")}
-            />
-
-            <Image
-                style={{ width: '100%', height: windowHeight }}
-                source={require("../../assets/icon/trang3.gif")}
-            />
-
-            <Image
-                style={{ width: '100%', height: windowHeight }}
-                source={require("../../assets/icon/trang4.gif")}
-            />
-
-
-        </ScrollView>
+                <Text style={{ color: "red" }}>Logout</Text>
+            </TouchableOpacity>
+        </View>
     )
 }
-
-const styles = StyleSheet.create({
-    main: {
-        flex: 1,
-    },
-    scrollView: {
-        // paddingTop: 16,
-    },
-})
 
 export default DuHoc;
