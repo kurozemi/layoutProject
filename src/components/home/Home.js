@@ -8,8 +8,6 @@ import { Dimensions } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-console.log('window 30%: ', windowWidth * 0.3);
-console.log('window 60%: ', windowWidth * 0.6);
 const topCategories = [
     {
         image: "https://i.ytimg.com/vi/PCAwJs51D0k/maxresdefault.jpg",

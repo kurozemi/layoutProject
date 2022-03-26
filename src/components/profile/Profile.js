@@ -1,14 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native'
 import styles from './Profile.style'
+import userStore from '../../zustandStore';
 
 import ReactNativeBiometrics from 'react-native-biometrics'
 
 
 const Profile = ({ navigation }) => {
 
+    const setAccount = userStore(state => state.setAccount)
+
     const [biometrics, setBiometrics] = useState(null);
+
     const [isDisplayBio, setIsDisplayBio] = useState(true);
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
 
     const invalidToken = useRef(false);
 
@@ -20,6 +28,11 @@ const Profile = ({ navigation }) => {
         }
 
         console.log('login successfully');
+        setAccount(username, password)
+
+        setUsername("");
+        setPassword("");
+
         navigation.navigate("Home");
         invalidToken.current = false;
     }
@@ -60,6 +73,8 @@ const Profile = ({ navigation }) => {
 
         }).catch(e => {
             console.log('e: ', e.message);
+            alert(e.message);
+
 
             invalidToken.current = true;
 
@@ -69,7 +84,7 @@ const Profile = ({ navigation }) => {
     }
 
     const checkSensorAvailable = () => {
-        console.log('check sensor available');
+        // console.log('check sensor available');
 
         ReactNativeBiometrics.isSensorAvailable()
             .then(async (resultObject) => {
@@ -102,6 +117,34 @@ const Profile = ({ navigation }) => {
 
     return (
         <View style={styles.main}>
+
+            <TextInput
+                placeholder='username'
+                style={{
+                    borderWidth: 1,
+                    paddingVertical: 10,
+                    paddingHorizontal: 18,
+                    width: "70%",
+                    margin: 10,
+                }}
+                onChangeText = {setUsername}
+                value = {username}
+            />
+
+            <TextInput
+                placeholder='password'
+                style={{
+                    borderWidth: 1,
+                    paddingVertical: 10,
+                    paddingHorizontal: 18,
+                    width: "70%",
+                    margin: 10,
+                }}
+                value = {password}
+                onChangeText = {setPassword}
+
+                secureTextEntry
+            />
             <TouchableOpacity
                 style={{
                     borderWidth: 1,
@@ -109,7 +152,10 @@ const Profile = ({ navigation }) => {
                     paddingHorizontal: 20,
                     borderRadius: 8,
                 }}
-                onPress={login}
+                onPress={() => {
+
+                    login()
+                }}
             >
                 <Text>Login</Text>
             </TouchableOpacity>
@@ -126,6 +172,8 @@ const Profile = ({ navigation }) => {
 
                 </TouchableOpacity>
             }
+
+            
         </View >
     )
 }
