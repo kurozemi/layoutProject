@@ -23,12 +23,14 @@ const DuHoc = ({ navigation }) => {
             username: username,
             password: password,
         })
+
+
         ReactNativeBiometrics.simplePrompt({
             promptMessage: "Register Fingerprint",
         }).then(response => {
             const { success, error } = response;
 
-            if (success) {                
+            if (success) {
                 setShowModal(false);
                 setEnableFingerprint(true);
 
@@ -58,10 +60,11 @@ const DuHoc = ({ navigation }) => {
         })
     }, []);
 
-    const logout = () => {
+    const logout = async () => {
         navigation.navigate("Main");
 
-        
+        const { keysExist } = await ReactNativeBiometrics.biometricKeysExist()
+        console.log('logout key: ', keysExist);
     }
     return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -78,7 +81,7 @@ const DuHoc = ({ navigation }) => {
                     else {
                         console.log('disable fingerprint');
                         disableFingerprint()
-                        
+
                     }
                 }}
             />
@@ -100,13 +103,13 @@ const DuHoc = ({ navigation }) => {
             >
                 <TouchableOpacity
                     activeOpacity={1}
-                    onPress={() => setShowModal(false)}
+                    onPress={() => disableFingerprint()}
                     style={styles.fullscreen}
                 >
-                    <TouchableOpacity 
-                    activeOpacity={1}
-                    onPress={() => {}}
-                    style = {styles.modal}>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={() => { }}
+                        style={styles.modal}>
                         <Text>Xác thực vân tay để đăng nhập lẹ hơn</Text>
                         <TouchableOpacity
                             style={{ marginTop: 20 }}
@@ -130,13 +133,13 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
         backgroundColor: "rgba(0,0,0,0.25)",
-        alignItems:"center",
-        justifyContent:"center",
+        alignItems: "center",
+        justifyContent: "center",
     },
     modal: {
         backgroundColor: "white",
-        alignItems:"center",
-        justifyContent:"center",
+        alignItems: "center",
+        justifyContent: "center",
         padding: 30,
         borderRadius: 14,
     },
