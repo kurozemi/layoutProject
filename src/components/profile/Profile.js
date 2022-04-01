@@ -4,6 +4,8 @@ import styles from './Profile.style'
 import userStore from '../../zustandStore';
 
 import ReactNativeBiometrics from 'react-native-biometrics'
+import EncryptedStorage from 'react-native-encrypted-storage';
+
 
 
 const Profile = ({ navigation }) => {
@@ -20,22 +22,31 @@ const Profile = ({ navigation }) => {
 
     const invalidToken = useRef(false);
 
-    const login = async () => {
+    const login = async (type = "normal") => {
 
         if (invalidToken.current) {
             console.log('delete invalid key when login success');
             ReactNativeBiometrics.deleteKeys();
         }
 
-        console.log('login successfully');
-        setAccount(username, password)
+        if (type == "normal") {
+            const bioAccount = getBioAccount();
 
-        setUsername("");
-        setPassword("");
+            if (bioAccount?.username != username) {
+                console.log('clear fingerprint data when login to different account');
+                EncryptedStorage.clear();
+                ReactNativeBiometrics.deleteKeys();
+            }
+
+            setAccount(username, password)
+        }
+
+        console.log('login successfully');
 
         navigation.navigate("Home");
         invalidToken.current = false;
     }
+
 
     const controlPrivateKey = async (callbackFunc) => {
         const result = await ReactNativeBiometrics.biometricKeysExist()
@@ -51,19 +62,32 @@ const Profile = ({ navigation }) => {
         callbackFunc && callbackFunc();
     }
 
+    const getBioAccount = async () => {
+        const bioAccount = await EncryptedStorage.getItem("Biometrics Account")
+
+        if (bioAccount == null) return
+
+        const account = JSON.parse(bioAccount)
+
+        return account;
+    }
     const validateFingerprint = async () => {
 
         console.log('control fingerprint');
 
         ReactNativeBiometrics.createSignature({
             promptMessage: "Sign In",
-            payload: "hehe",
-        }).then(result => {
-            const { success, signature, error } = result;
+            payload: "User Login",
+        }).then(async (result) => {
+            const { success, error } = result;
             invalidToken.current = false;
             if (success) {
-                console.log(signature);
-                login()
+
+                const bioAccount = await getBioAccount();
+
+                setAccount(bioAccount?.username, bioAccount?.password);
+
+                login("fingerprint");
             }
             if (error) {
 
@@ -75,7 +99,7 @@ const Profile = ({ navigation }) => {
             console.log('e: ', e.message);
             alert(e.message);
 
-
+            EncryptedStorage.clear();
             invalidToken.current = true;
 
             setIsDisplayBio(false);
@@ -127,8 +151,8 @@ const Profile = ({ navigation }) => {
                     width: "70%",
                     margin: 10,
                 }}
-                onChangeText = {setUsername}
-                value = {username}
+                onChangeText={setUsername}
+                value={username}
             />
 
             <TextInput
@@ -140,8 +164,8 @@ const Profile = ({ navigation }) => {
                     width: "70%",
                     margin: 10,
                 }}
-                value = {password}
-                onChangeText = {setPassword}
+                value={password}
+                onChangeText={setPassword}
 
                 secureTextEntry
             />
@@ -173,7 +197,7 @@ const Profile = ({ navigation }) => {
                 </TouchableOpacity>
             }
 
-            
+
         </View >
     )
 }

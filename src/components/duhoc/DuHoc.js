@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Switch, Modal, Image, StyleSheet } from 'react-native'
 import ReactNativeBiometrics from 'react-native-biometrics';
 import userStore from '../../zustandStore';
-
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const DuHoc = ({ navigation }) => {
     const { username, password } = userStore();
@@ -12,22 +12,28 @@ const DuHoc = ({ navigation }) => {
 
     const disableFingerprint = () => {
         ReactNativeBiometrics.deleteKeys()
+        console.log('disable fingerprint');
+        setShowModal(false);
         setEnableFingerprint(false);
     }
     const registerFingerprint = async () => {
         await ReactNativeBiometrics.createKeys("Enable Fingerprints")
 
-        ReactNativeBiometrics.createSignature({
+        const payload = JSON.stringify({
+            username: username,
+            password: password,
+        })
+        ReactNativeBiometrics.simplePrompt({
             promptMessage: "Register Fingerprint",
-            payload: "hehe",
         }).then(response => {
             const { success, error } = response;
 
-            if (success) {
-                console.log('register fingerprint success:', username);
-                
+            if (success) {                
                 setShowModal(false);
                 setEnableFingerprint(true);
+
+                console.log('set account storage');
+                EncryptedStorage.setItem("Biometrics Account", payload);
             }
 
             if (error) {
@@ -35,7 +41,6 @@ const DuHoc = ({ navigation }) => {
                 console.log('user cancel', username);
             }
         }).catch(e => {
-            console.log(e.message);
             disableFingerprint()
             alert(e.message);
         })
@@ -56,10 +61,12 @@ const DuHoc = ({ navigation }) => {
     const logout = () => {
         navigation.navigate("Main");
 
+        
     }
     return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Text>Hello {username}</Text>
+            <Text>Hello {username || "Blank"}</Text>
+            <Text>Password: {password || "Blank"}</Text>
 
             <Switch
                 value={enableFingerprint}
@@ -83,7 +90,7 @@ const DuHoc = ({ navigation }) => {
             </TouchableOpacity>
 
             <Modal
-                animationType="slide"
+                animationType="fade"
                 transparent={true}
                 visible={showRegisterModal}
                 onRequestClose={() => {
